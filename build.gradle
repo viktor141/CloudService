@@ -32,11 +32,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
 
+
     implementation 'io.jsonwebtoken:jjwt:0.8.0'
     implementation 'javax.servlet:servlet-api:2.5'
     implementation 'org.springframework:spring-tx:6.0.10'
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     implementation 'org.hibernate:hibernate-core:6.1.7.Final'
+    testImplementation 'org.testcontainers:mysql:1.17.3'
+    testImplementation 'org.testcontainers:junit-jupiter:1.17.3'
+
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

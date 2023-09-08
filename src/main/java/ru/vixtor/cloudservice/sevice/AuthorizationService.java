@@ -26,7 +26,7 @@ public class AuthorizationService {
 
 
 
-    public AuthorizationResponse login(AuthorizationRequest authorizationRequest) {
+    public String login(AuthorizationRequest authorizationRequest) {
         final String username = authorizationRequest.getLogin();
         final String password = authorizationRequest.getPassword();
         Authentication authentication = authenticationManager.authenticate
@@ -36,7 +36,7 @@ public class AuthorizationService {
         String token = tokenProvider.generateToken(userDetails);
         authorizationRepository.putTokenAndUsername(token, username);
         log.info("User {} is authorized", username);
-        return new AuthorizationResponse(token);
+        return token;
     }
 
     public void logout(String authToken) {

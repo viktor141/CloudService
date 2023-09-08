@@ -34,8 +34,6 @@ public class FileService {
         if (user == null) {
             throw new UnauthorizedException("Unauthorized error");
         }
-
-        System.out.println("pidorasina:    " + file.getSize());
         fileRepository.save(new File(filename, file.getSize(), file.getContentType(), file.getBytes(), user));
         log.info("User {} upload file {}", user.getLogin(), filename);
     }
@@ -70,24 +68,21 @@ public class FileService {
             log.error("Edit file error");
             throw new UnauthorizedException("Unauthorized error");
         }
-        if (newFileName != null) {
-            fileRepository.editFileNameByUser(user, filename, newFileName);
-            log.info("User {} edit file {}", user.getLogin(), filename);
-        } else {
-            throw new InputDataException("Error input data");
-        }
+
+        if (newFileName == null) throw new InputDataException("Error input data");
+
+        fileRepository.editFileNameByUser(user, filename, newFileName);
+        log.info("User {} edit file {}", user.getLogin(), filename);
     }
 
-    public List<FileResponse> getAllFiles(String authToken, Integer limit) {
+    public List<File> getAllFiles(String authToken, Integer limit) {
         final User user = getUser(authToken);
         if (user == null) {
             log.error("Get all files error");
             throw new UnauthorizedException("Unauthorized error");
         }
         log.info("User {} get all files", user.getLogin());
-        return fileRepository.findAllByUser(user, Sort.by("filename")).stream()
-                .map(f -> new FileResponse(f.getFilename(), f.getSize()))
-                .collect(Collectors.toList());
+        return fileRepository.findAllByUser(user, Sort.by("filename"));
     }
 
     private User getUser(String authToken) {
